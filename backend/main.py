@@ -10,6 +10,9 @@ import aiosql
 from google.auth import exceptions
 from omdb_utils import get_motion_picture_info
 from scraping_utils import extract_tagline
+from tmdb_utils import get_actor_profile_picture
+from general_utils import get_all_details
+import time
 
 queries = aiosql.from_path("sql", "psycopg2")
 
@@ -81,6 +84,15 @@ async def get_shows():
         all_shows.append(show_dict)
     return all_shows
 
+@app.get("/movies/{movie_id}")
+async def get_movie(movie_id: int):
+    return get_all_details(conn, movie_id, 1)
+
+@app.get("/shows/{show_id}")
+async def get_show(show_id: int):
+    return get_all_details(conn, show_id, 2)
+
+
 @app.post("/add")
 async def add_motion_picture(info: Request):
     req_info = await info.json()
@@ -111,17 +123,24 @@ async def add_motion_picture(info: Request):
             poster=motion_picture_info["poster"],
             tmdb_id=motion_picture_info["tmdb_id"]
         )
-    
+    time.sleep(1)
     for actor in motion_picture_info["actors"].split(", "):
-        actor_id = queries.insert_actor(conn, name=actor)
+        actor_profile_picture = get_actor_profile_picture(actor)
+        actor_id = queries.get_actor_id(conn, name=actor)
+        if actor_id is None:
+            actor_id = queries.insert_actor(conn, name=actor, profile_picture=actor_profile_picture)
         queries.insert_motion_picture_actor(conn, motion_picture_id=motion_picture_id, actor_id=actor_id)
-    
+    time.sleep(1)
     for writer in motion_picture_info["writers"].split(", "):
-        writer_id = queries.insert_writer(conn, name=writer)
+        writer_id = queries.get_writer_id(conn, name=writer)
+        if writer_id is None:
+            writer_id = queries.insert_writer(conn, name=writer)
         queries.insert_motion_picture_writer(conn, motion_picture_id=motion_picture_id, writer_id=writer_id)
-    
+    time.sleep(1)
     for genre in motion_picture_info["genres"].split(", "):
-        genre_id = queries.insert_genre(conn, name=genre)
+        genre_id = queries.get_genre_id(conn, name=genre)
+        if genre_id is None:
+            genre_id = queries.insert_genre(conn, name=genre)
         queries.insert_motion_picture_genre(conn, motion_picture_id=motion_picture_id, genre_id=genre_id)
     
     conn.commit()
