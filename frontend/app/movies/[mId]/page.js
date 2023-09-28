@@ -134,7 +134,7 @@ export default function MovieDetails({ params }) {
               </span>
             </div> */}
           </div>
-          
+
           <div className="mt-8">
             <h2 className="text-2xl font-semibold">Additional Details</h2>
             <div className="flex flex-col space-y-4 mt-4">
@@ -157,9 +157,20 @@ export default function MovieDetails({ params }) {
               </div>
 
               {/* Actors */}
-              <div className="flex items-center">
-                <span className="font-semibold mr-2">Actors:</span>
-                <p>{movieData.actors.join(", ")}</p>
+              <div>
+                <span className="font-semibold block mb-2">Actors:</span>
+                <div className="flex flex-wrap gap-4">
+                  {movieData.actors.map((actor) => (
+                    <div key={actor.name} className="text-center">
+                      <img
+                        src={actor.profilePicture}
+                        alt={actor.name}
+                        className="w-32 h-32 object-cover rounded-full mx-auto mb-2"
+                      />
+                      <p className="text-sm">{actor.name}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {/* Genre */}
