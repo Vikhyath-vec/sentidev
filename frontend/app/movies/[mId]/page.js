@@ -178,39 +178,39 @@ export default function MovieDetails({ params }) {
       </div>
 
       {/* Reviews */}
-      <div className="mt-8 border rounded-lg p-4">
-        <h2 className="text-2xl font-semibold mb-4">Top Reviews</h2>
+      <div className="mt-8">
+        <h2 className="text-3xl font-semibold mb-4">Top Reviews</h2>
 
-        <div className="mt-4">
-          <h3 className="text-lg font-semibold">Overall Review</h3>
-          <p className="text-lg">
+        <div className="bg-gray-800 rounded-lg p-4">
+          <h3 className="text-xl font-semibold">Overall Review</h3>
+          <p className="text-lg mt-2">
             {movieData.summary || "No overall review available."}
           </p>
-          <h3 className="text-lg font-semibold mt-4">Overall Rating</h3>
-          <p className="text-lg">
+          <h3 className="text-xl font-semibold mt-4">Overall Rating</h3>
+          <p className="text-lg mt-2">
             {movieData.overallRating || "No overall rating available."}
           </p>
         </div>
 
         {movieData.reviews.map((review, index) => (
-          <div key={index} className="mb-4">
+          <div key={index} className="bg-gray-800 rounded-lg p-4 mt-4">
             {/* Review Title */}
-            <div className="flex items-center mb-2">
-              <h3 className="text-lg font-semibold mr-2">{review.title}</h3>
+            <div className="flex items-center justify-between">
+              <h3 className="text-xl font-semibold">{review.title}</h3>
               <p className="text-sm text-gray-400">{review.date}</p>
             </div>
 
             {/* Review Text */}
-            <p className="text-lg mb-2">{review.text}</p>
+            <p className="text-lg mt-2">{review.text}</p>
 
             {/* Rating */}
             <div className="mb-2 flex items-center">
-              <span className="text-lg font-semibold mr-2">Rating:</span>
-              <span className="text-lg">{review.rating}</span>
+              <span className="text-xl font-semibold mr-2">Rating:</span>
+              <span className="text-xl">{review.rating}</span>
             </div>
 
             {/* Likes and Dislikes */}
-            <div className="flex items-center">
+            <div className="flex items-center mt-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -247,9 +247,7 @@ export default function MovieDetails({ params }) {
       </div>
 
       <div>
-        <img 
-          src={source}
-        />
+        <img src={`data:image/png;base64,${source}`} />
       </div>
 
       {/* Add Your Review */}
