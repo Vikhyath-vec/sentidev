@@ -4,29 +4,29 @@ import React, {useState, useEffect} from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-const moviesData = [
-  {
-    title: "Interstellar",
-    description: "Space Adventure!",
-    image: "/mv_1.jpg",
-  },
-  {
-    title: "Inception",
-    description: "Dream Adventure!",
-    image: "/mv_2.jpg",
-  },
-  {
-    title: "Batman",
-    description: "I am Batman!",
-    image: "/mv_3.jpg",
-  },
-];
+// const moviesData = [
+//   {
+//     title: "Interstellar",
+//     description: "Space Adventure!",
+//     image: "/mv_1.jpg",
+//   },
+//   {
+//     title: "Inception",
+//     description: "Dream Adventure!",
+//     image: "/mv_2.jpg",
+//   },
+//   {
+//     title: "Batman",
+//     description: "I am Batman!",
+//     image: "/mv_3.jpg",
+//   },
+// ];
 
 export default function Movies() {
   const router = useRouter();
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredMovies, setFilteredMovies] = useState(moviesData);
+  const [filteredMovies, setFilteredMovies] = useState([]);
 
   useEffect(() => {
     
@@ -50,7 +50,7 @@ export default function Movies() {
     setSearchQuery(query);
 
     // Filter movies based on the search query
-    const filtered = moviesData.filter((movie) =>
+    const filtered = filteredMovies.filter((movie) =>
       movie.title.toLowerCase().includes(query)
     );
     setFilteredMovies(filtered);
