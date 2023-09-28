@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -28,19 +28,21 @@ export default function Movies() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredMovies, setFilteredMovies] = useState(moviesData);
 
-  // useEffect(() => {
+  useEffect(() => {
     
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get("http://localhost:8000/movies");
-  //       setFilteredMovies(response.data);
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //     }
-  //   };
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/movies", {method: "GET"});
+        const data = await response.json();
+        console.log("response:", data);
+        setFilteredMovies(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-  //   fetchData();
-  // }, []);
+    fetchData();
+  }, []);
 
   // Function to handle search input changes
   const handleSearchInputChange = (e) => {
@@ -85,7 +87,7 @@ export default function Movies() {
               onClick={() => router.push(`/movies/${index}`)}
             >
               <img
-                src={movie.image}
+                src={movie.poster}
                 alt={movie.title}
                 className="w-full h-auto rounded-lg"
               />
