@@ -59,3 +59,6 @@ SELECT id FROM writers WHERE name = :name;
 
 -- name: get_genre_id^
 SELECT id FROM genres WHERE name = :name;
+
+-- name: get_motion_picture_id^
+SELECT id FROM motion_picture WHERE title = :title AND type = :mtype;

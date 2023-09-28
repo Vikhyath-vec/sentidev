@@ -105,6 +105,9 @@ async def add_motion_picture(info: Request):
         return {"Result": "Failure"}
     motion_picture_info["tagline"] = extract_tagline(title)
     if motion_picture_info["type"] == 0:
+        motion_picture_id = queries.get_motion_picture_id(conn, title=motion_picture_info["title"], mtype=1)
+        if motion_picture_id is not None:
+            return {"Result": "Failure"}
         motion_picture_id = queries.insert_movie(
             conn,
             title=motion_picture_info["title"],
@@ -115,6 +118,9 @@ async def add_motion_picture(info: Request):
             tmdb_id=motion_picture_info["tmdb_id"]
         )
     elif motion_picture_info["type"] == 1:
+        motion_picture_id = queries.get_motion_picture_id(conn, title=motion_picture_info["title"], mtype=2)
+        if motion_picture_id is not None:
+            return {"Result": "Failure"}
         motion_picture_id = queries.insert_show(
             conn,
             title=motion_picture_info["title"],
