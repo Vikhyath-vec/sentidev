@@ -36,4 +36,20 @@ def get_all_details(conn, id1, mtype):
         }
         actors.append(actor_dict)
     movie_dict["actors"] = actors
+    reviews = []
+    reviews_info = queries.get_review_by_id(conn, motion_picture_id=motion_picture_info[0])
+    for review in reviews_info[:5]:
+        likes = queries.get_likes(conn, review_id=review[0])
+        dislikes = queries.get_dislikes(conn, review_id=review[0])
+        review_dict = {
+            "id": review[0],
+            "title": review[3],
+            "text": review[5],
+            "rating": review[4],
+            "date": review[6],
+            "likes": likes,
+            "dislikes": dislikes
+        }
+        reviews.append(review_dict)
+    movie_dict["reviews"] = reviews
     return movie_dict
