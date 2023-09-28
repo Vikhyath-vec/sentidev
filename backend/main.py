@@ -53,6 +53,32 @@ app.add_middleware(
 async def read_root():
     return {"Hello": "World"}
 
+@app.get("/movies")
+async def get_movies():
+    movies = queries.get_all_movies(conn)
+    all_movies = []
+    for movie in movies:
+        movie_dict = {
+            "title": movie[0],
+            "poster": movie[1],
+            "tagline": movie[2]
+        }
+        all_movies.append(movie_dict)
+    return all_movies
+
+@app.get("/shows")
+async def get_shows():
+    shows = queries.get_all_shows(conn)
+    all_shows = []
+    for show in shows:
+        show_dict = {
+            "title": show[0],
+            "poster": show[1],
+            "tagline": show[2]
+        }
+        all_shows.append(show_dict)
+    return all_shows
+
 @app.post("/add")
 async def add_motion_picture(info: Request):
     req_info = await info.json()
