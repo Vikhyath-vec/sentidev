@@ -4,24 +4,6 @@ import React, {useState, useEffect} from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-// const moviesData = [
-//   {
-//     title: "Interstellar",
-//     description: "Space Adventure!",
-//     image: "/mv_1.jpg",
-//   },
-//   {
-//     title: "Inception",
-//     description: "Dream Adventure!",
-//     image: "/mv_2.jpg",
-//   },
-//   {
-//     title: "Batman",
-//     description: "I am Batman!",
-//     image: "/mv_3.jpg",
-//   },
-// ];
-
 export default function Movies() {
   const router = useRouter();
 
