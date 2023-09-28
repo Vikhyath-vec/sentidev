@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 // const movieData = {
 //   id: 1,
@@ -52,23 +53,28 @@ export default function MovieDetails({ params }) {
     2: 0,
     1: 0,
   });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/movies/${params.mId}`, {
-          method: "GET",
-        });
-        const data = await response.json();
-        console.log("response:", data);
-        setMovieData(data);
+        const response = await axios.get(`http://localhost:8000/movies/${params.mId}`);
+        // const data = await response.json();
+        console.log("response:", response.data);
+        setMovieData(response.data);
+        setLoading(false);
       } catch (error) {
+        setLoading(false);
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
   }, []);
+
+  if(loading) {
+    return <div>Loading...</div>
+  }
 
   // const handleReviewChange = (e) => {
   //   setUserReview(e.target.value);
