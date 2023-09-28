@@ -3,27 +3,27 @@
 import Link from "next/link";
 import React, { useState } from "react";
 
-const movieData = {
-  id: 1,
-  title: "Interstellar",
-  description: "Space Adventure!",
-  image: "/mv_1.jpg",
-  ratings: 4,
-  reviews: [
-    {
-      id: 1,
-      user: "Steve",
-      comment: "Great movie! Highly recommended.",
-      rating: 4,
-    },
-    {
-      id: 2,
-      user: "Stephen",
-      comment: "Enjoyed every minute of it.",
-      rating: 4,
-    },
-  ],
-};
+// const movieData = {
+//   id: 1,
+//   title: "Interstellar",
+//   description: "Space Adventure!",
+//   image: "/mv_1.jpg",
+//   ratings: 4,
+//   reviews: [
+//     {
+//       id: 1,
+//       user: "Steve",
+//       comment: "Great movie! Highly recommended.",
+//       rating: 4,
+//     },
+//     {
+//       id: 2,
+//       user: "Stephen",
+//       comment: "Enjoyed every minute of it.",
+//       rating: 4,
+//     },
+//   ],
+// };
 
 const recommendedMovies = [
   {
@@ -42,51 +42,65 @@ export default function MovieDetails({ params }) {
 
   console.log("params:", params);
 
+  const [movieData, setMovieData] = useState([]);
   const [userReview, setUserReview] = useState("");
   const [userRating, setUserRating] = useState(0);
   const [ratingsData, setRatingsData] = useState({
-    5: 0, // Number of 5-star ratings
-    4: 0, // Number of 4-star ratings
-    3: 0, // Number of 3-star ratings
-    2: 0, // Number of 2-star ratings
-    1: 0, // Number of 1-star ratings
+    5: 0,
+    4: 0,
+    3: 0,
+    2: 0,
+    1: 0,
   });
 
-  const handleReviewChange = (e) => {
-    setUserReview(e.target.value);
-  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://localhost:8000/movies/${params.mId}`, {
+          method: "GET",
+        });
+        const data = await response.json();
+        console.log("response:", data);
+        setMovieData(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-  const handleRatingChange = (rating) => {
-    setUserRating(rating);
-  };
+    fetchData();
+  }, []);
 
-  const handleAddReview = () => {
-    if (userReview.trim() !== "" && userRating > 0) {
-      // Add the user's review and rating
-      movieData.reviews.push({
-        id: movieData.reviews.length + 1,
-        user: "Your Name", // Replace with user's name or use a user authentication system
-        comment: userReview,
-        rating: userRating,
-      });
+  // const handleReviewChange = (e) => {
+  //   setUserReview(e.target.value);
+  // };
 
-      // Update the ratings data
-      setRatingsData((prevData) => ({
-        ...prevData,
-        [userRating]: prevData[userRating] + 1,
-      }));
+  // const handleRatingChange = (rating) => {
+  //   setUserRating(rating);
+  // };
 
-      // Clear the textarea and reset the rating
-      setUserReview("");
-      setUserRating(0);
-    }
-  };
+  // const handleAddReview = () => {
+  //   if (userReview.trim() !== "" && userRating > 0) {
+  //     movieData.reviews.push({
+  //       id: movieData.reviews.length + 1,
+  //       user: "Your Name",
+  //       comment: userReview,
+  //       rating: userRating,
+  //     });
 
-  // Calculate the average rating
-  const totalRatings = Object.values(ratingsData).reduce((acc, curr) => acc + curr, 0);
-  const totalPoints = Object.entries(ratingsData).reduce((acc, [rating, count]) => acc + rating * count, 0);
-  const averageRating = totalPoints / totalRatings || movieData.ratings;
-  const percentage = (averageRating / 5) * 100;
+  //     setRatingsData((prevData) => ({
+  //       ...prevData,
+  //       [userRating]: prevData[userRating] + 1,
+  //     }));
+
+  //     setUserReview("");
+  //     setUserRating(0);
+  //   }
+  // };
+
+  // const totalRatings = Object.values(ratingsData).reduce((acc, curr) => acc + curr, 0);
+  // const totalPoints = Object.entries(ratingsData).reduce((acc, [rating, count]) => acc + rating * count, 0);
+  // const averageRating = totalPoints / totalRatings || movieData.ratings;
+  // const percentage = (averageRating / 5) * 100;
 
   return (
     <div className="bg-gradient-to-b from-gray-900 to-black min-h-screen">
@@ -101,7 +115,7 @@ export default function MovieDetails({ params }) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="max-h-screen overflow-hidden">
             <img
-              src={movieData.image}
+              src={movieData.poster}
               alt={movieData.title}
               className="max-w-full w-3/5 h-auto rounded-lg"
             />
@@ -110,21 +124,56 @@ export default function MovieDetails({ params }) {
             <h1 className="text-4xl font-extrabold text-white mb-4">
               {movieData.title}
             </h1>
-            <p className="text-gray-400 mb-4">{movieData.description}</p>
-            <div className="flex items-center">
+            <p className="text-gray-400 mb-4">{movieData.tagline}</p>
+            {/* <div className="flex items-center">
               <span className="text-yellow-400 text-lg font-semibold">
                 {averageRating.toFixed(1)}
               </span>
               <span className="text-gray-400 ml-2">
                 ({movieData.reviews.length} Reviews)
               </span>
+            </div> */}
+          </div>
+          
+          <div className="mt-8">
+            <h2 className="text-2xl font-semibold">Additional Details</h2>
+            <div className="flex flex-col space-y-4 mt-4">
+              {/* Summary */}
+              <div className="flex items-center">
+                <span className="font-semibold mr-2">Summary:</span>
+                <p>{movieData.desc}</p>
+              </div>
+
+              {/* Director */}
+              <div className="flex items-center">
+                <span className="font-semibold mr-2">Director:</span>
+                <p>{movieData.director}</p>
+              </div>
+
+              {/* Writers */}
+              <div className="flex items-center">
+                <span className="font-semibold mr-2">Writers:</span>
+                <p>{movieData.writers.join(", ")}</p>
+              </div>
+
+              {/* Actors */}
+              <div className="flex items-center">
+                <span className="font-semibold mr-2">Actors:</span>
+                <p>{movieData.actors.join(", ")}</p>
+              </div>
+
+              {/* Genre */}
+              <div className="flex items-center">
+                <span className="font-semibold mr-2">Genres:</span>
+                <p>{movieData.genres.join(", ")}</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Reviews */}
-      <div className="container mx-auto py-8 px-4">
+      {/* <div className="container mx-auto py-8 px-4">
         <h2 className="text-2xl font-extrabold text-white mb-4">Reviews</h2>
         <ul className="divide-y divide-gray-600">
           {movieData.reviews.map((review) => (
@@ -134,10 +183,10 @@ export default function MovieDetails({ params }) {
             </li>
           ))}
         </ul>
-      </div>
+      </div> */}
 
       {/* Add Your Review */}
-      <div className="container mx-auto py-8 px-4">
+      {/* <div className="container mx-auto py-8 px-4">
         <h2 className="text-2xl font-extrabold text-white mb-4">
           Add Your Review
         </h2>
@@ -175,10 +224,10 @@ export default function MovieDetails({ params }) {
             </button>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Horizontal Rating Bar */}
-      <div className="container mx-auto py-8 px-4">
+      {/* <div className="container mx-auto py-8 px-4">
         <h2 className="text-2xl font-extrabold text-white mb-4">
           Average Rating
         </h2>
@@ -194,10 +243,10 @@ export default function MovieDetails({ params }) {
         <div className="mt-2 text-white text-center">
           {averageRating.toFixed(1)}
         </div>
-      </div>
+      </div> */}
 
       {/* Ratings Table */}
-      <div className="container mx-auto py-8 px-4">
+      {/* <div className="container mx-auto py-8 px-4">
         <h2 className="text-2xl font-extrabold text-white mb-4">
           Ratings Summary
         </h2>
@@ -223,7 +272,7 @@ export default function MovieDetails({ params }) {
             </tr>
           </tbody>
         </table>
-      </div>
+      </div> */}
 
       {/* Recommended Movies */}
       <div className="container mx-auto py-8 px-4">
