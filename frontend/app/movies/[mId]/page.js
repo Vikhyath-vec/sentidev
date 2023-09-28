@@ -38,7 +38,10 @@ const recommendedMovies = [
   },
 ];
 
-export default function MovieDetails() {
+export default function MovieDetails({ params }) {
+
+  console.log("params:", params);
+
   const [userReview, setUserReview] = useState("");
   const [userRating, setUserRating] = useState(0);
   const [ratingsData, setRatingsData] = useState({

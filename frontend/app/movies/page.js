@@ -81,10 +81,10 @@ export default function Movies() {
         </div>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {filteredMovies.map((movie, index) => (
+          {filteredMovies.map((movie) => (
             <button
               className="bg-gray-800 p-4 rounded-lg transition-transform transform hover:scale-105"
-              onClick={() => router.push(`/movies/${index}`)}
+              onClick={() => router.push(`/movies/${movie.id}`)}
             >
               <img
                 src={movie.poster}
