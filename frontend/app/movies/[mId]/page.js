@@ -262,7 +262,7 @@ export default function MovieDetails({ params }) {
 
       <div className="mt-8">
         <img 
-          src={`data:image/png;base64,${movieData.worldcloud}`} 
+          src={`data:image/png;base64,${movieData.wordcloud}`} 
           alt="worldcloud"
           className="w-1/2 h-auto rounded-lg shadow-lg"
         />
