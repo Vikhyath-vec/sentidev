@@ -26,6 +26,7 @@ export default function Movies() {
   const router = useRouter();
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [movies, setMovies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
 
   useEffect(() => {
@@ -35,6 +36,7 @@ export default function Movies() {
         const response = await fetch("http://localhost:8000/movies", {method: "GET"});
         const data = await response.json();
         console.log("response:", data);
+        setMovies(data);
         setFilteredMovies(data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -81,7 +83,23 @@ export default function Movies() {
         </div>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {filteredMovies.map((movie) => (
+          {searchQuery ? filteredMovies.map((movie) => (
+            <button
+              className="bg-gray-800 p-4 rounded-lg transition-transform transform hover:scale-105"
+              onClick={() => router.push(`/movies/${movie.id}`)}
+            >
+              <img
+                src={movie.poster}
+                alt={movie.title}
+                className="w-full h-auto rounded-lg"
+              />
+              <h2 className="text-xl font-semibold text-white py-3">
+                {movie.title}
+              </h2>
+              <p className="text-gray-400 mt-2">{movie.tagline}</p>
+            </button>
+          )) :
+          movies.map((movie) => (
             <button
               className="bg-gray-800 p-4 rounded-lg transition-transform transform hover:scale-105"
               onClick={() => router.push(`/movies/${movie.id}`)}
