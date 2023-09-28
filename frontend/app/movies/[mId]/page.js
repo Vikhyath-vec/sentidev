@@ -253,7 +253,7 @@ export default function MovieDetails({ params }) {
       </div>
 
       <div>
-        <img src={decodeBase64Image(movieData.runningAverage)} />
+        <img src={`data:image/png;base64,${movieData.runningAverage}`} />
       </div>
 
       {/* Add Your Review */}
