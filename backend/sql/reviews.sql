@@ -1,5 +1,5 @@
 -- name: insert_review!
-INSERT INTO review (user_email, motion_picture_id, title, rating, review, review_date) VALUES (:user_email, :motion_picture_id, :title, :rating, :review, :review_date);
+INSERT INTO review (motion_picture_id, title, rating, review, review_date) VALUES (:motion_picture_id, :title, :rating, :review, :review_date);
 
 -- name: add_like!
 INSERT INTO likes_and_dislikes (user_email, review_id, like_or_dislike) VALUES (:user_email, :review_id, :like_or_dislike)
@@ -19,3 +19,6 @@ SELECT * FROM review WHERE motion_picture_id = :motion_picture_id ORDER BY revie
 
 --name: get_reviews_by_user
 SELECT * FROM review WHERE user_email = :user_email ORDER BY review_date DESC;
+
+-- name: get_review_by_id
+SELECT * FROM review WHERE motion_picture_id = :motion_picture_id;
