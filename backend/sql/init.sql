@@ -52,7 +52,8 @@ CREATE TABLE motion_picture_genres
 CREATE TABLE actors
 (
     id BIGSERIAL NOT NULL PRIMARY KEY,
-    name VARCHAR NOT NULL UNIQUE
+    name VARCHAR NOT NULL UNIQUE,
+    profile_picture VARCHAR
 );
 
 CREATE TABLE motion_picture_actors
