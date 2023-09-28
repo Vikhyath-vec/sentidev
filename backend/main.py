@@ -76,10 +76,10 @@ async def get_shows():
     all_shows = []
     for show in shows:
         show_dict = {
-            "id": movie[0],
-            "title": movie[1],
-            "poster": movie[2],
-            "tagline": movie[3]
+            "id": show[0],
+            "title": show[1],
+            "poster": show[2],
+            "tagline": show[3]
         }
         all_shows.append(show_dict)
     return all_shows

@@ -22,3 +22,6 @@ SELECT * FROM review WHERE user_email = :user_email ORDER BY review_date DESC;
 
 -- name: get_review_by_id
 SELECT * FROM review WHERE motion_picture_id = :motion_picture_id;
+
+-- name: get_review_by_id_sorted
+SELECT rating, review_date FROM review WHERE motion_picture_id = :motion_picture_id ORDER BY review_date;
