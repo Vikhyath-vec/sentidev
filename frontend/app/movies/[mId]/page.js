@@ -109,15 +109,74 @@ export default function MovieDetails({ params }) {
   // const percentage = (averageRating / 5) * 100;
 
   return (
-    <div className="bg-gradient-to-b from-gray-900 to-black min-h-screen">
+    <div className="bg-gradient-to-b from-gray-900 to-black min-h-screen text-white">
       <Link
         href="/movies"
         className="bg-blue-500 hover:bg-blue-600 text-white font-semibold mt-5 mb-0 ml-5 py-2 px-4 rounded-full transition-transform transform hover:scale-105 inline-block"
       >
         &lt; Back to Movies
       </Link>
+
+      <div className="container mx-auto p-4 flex">
+        {/* Poster */}
+        <div className="flex-shrink-0 w-1/3">
+          <img
+            src={movieData.poster} // Replace with the actual URL of the movie poster
+            alt={movieData.title}
+            className="rounded-lg shadow-lg"
+          />
+        </div>
+
+        {/* Movie Details */}
+        <div className="flex-grow ml-4">
+          <h1 className="text-4xl font-semibold mb-2">{movieData.title}</h1>
+          <p className="text-lg">{movieData.tagline}</p>
+
+          {/* Summary */}
+          <div className="mt-4">
+            <h2 className="text-2xl font-semibold">Summary</h2>
+            <p>{movieData.desc}</p>
+          </div>
+
+          {/* Director */}
+          <div className="mt-4">
+            <h2 className="text-2xl font-semibold">Director</h2>
+            <p>{movieData.director}</p>
+          </div>
+
+          {/* Writers */}
+          <div className="mt-4">
+            <h2 className="text-2xl font-semibold">Writers</h2>
+            <p>{movieData.writers.join(", ")}</p>
+          </div>
+
+          {/* Actors */}
+          <div className="mt-4">
+            <h2 className="text-2xl font-semibold">Actors</h2>
+            <div className="flex flex-wrap gap-4">
+              {movieData.actors.map((actor) => (
+                <div key={actor.name} className="text-center">
+                  <img
+                    src={actor.profilePicture}
+                    alt={actor.name}
+                    className="w-32 h-32 object-cover rounded-full mx-auto mb-2"
+                  />
+                  <p className="text-sm">{actor.name}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Genre */}
+          <div className="mt-4">
+            <h2 className="text-2xl font-semibold">Genres</h2>
+            <p>{movieData.genres.join(", ")}</p>
+          </div>
+        </div>
+      </div>
+
       {/* Movie Details */}
-      <div className="container mx-auto py-8 px-4">
+      {/* <div className="container mx-auto py-8 px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="max-h-screen overflow-hidden">
             <img
@@ -131,63 +190,17 @@ export default function MovieDetails({ params }) {
               {movieData.title}
             </h1>
             <p className="text-gray-400 mb-4">{movieData.tagline}</p>
-            {/* <div className="flex items-center">
+            <div className="flex items-center">
               <span className="text-yellow-400 text-lg font-semibold">
                 {averageRating.toFixed(1)}
               </span>
               <span className="text-gray-400 ml-2">
                 ({movieData.reviews.length} Reviews)
               </span>
-            </div> */}
-          </div>
-
-          <div className="mt-8">
-            <h2 className="text-2xl font-semibold">Additional Details</h2>
-            <div className="flex flex-col space-y-4 mt-4">
-              {/* Summary */}
-              <div className="flex items-center">
-                <span className="font-semibold mr-2">Summary:</span>
-                <p>{movieData.desc}</p>
-              </div>
-
-              {/* Director */}
-              <div className="flex items-center">
-                <span className="font-semibold mr-2">Director:</span>
-                <p>{movieData.director}</p>
-              </div>
-
-              {/* Writers */}
-              <div className="flex items-center">
-                <span className="font-semibold mr-2">Writers:</span>
-                <p>{movieData.writers.join(", ")}</p>
-              </div>
-
-              {/* Actors */}
-              <div>
-                <span className="font-semibold block mb-2">Actors:</span>
-                <div className="flex flex-wrap gap-4">
-                  {movieData.actors.map((actor) => (
-                    <div key={actor.name} className="text-center">
-                      <img
-                        src={actor.profilePicture}
-                        alt={actor.name}
-                        className="w-32 h-32 object-cover rounded-full mx-auto mb-2"
-                      />
-                      <p className="text-sm">{actor.name}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Genre */}
-              <div className="flex items-center">
-                <span className="font-semibold mr-2">Genres:</span>
-                <p>{movieData.genres.join(", ")}</p>
-              </div>
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Reviews */}
       {/* <div className="container mx-auto py-8 px-4">
