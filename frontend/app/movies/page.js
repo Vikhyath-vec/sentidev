@@ -94,7 +94,7 @@ export default function Movies() {
               <h2 className="text-xl font-semibold text-white py-3">
                 {movie.title}
               </h2>
-              <p className="text-gray-400 mt-2">{movie.description}</p>
+              <p className="text-gray-400 mt-2">{movie.tagline}</p>
             </button>
           ))}
         </div>
