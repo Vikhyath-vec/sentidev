@@ -185,18 +185,22 @@ export default function MovieDetails({ params }) {
 
       {/* Reviews */}
       <div className="mt-8 mr-5 ml-5">
-        <h2 className="text-3xl font-semibold mb-4">Top Reviews</h2>
-
-        <div className="bg-gray-800 rounded-lg p-4">
-          <h3 className="text-xl font-semibold">Overall Review</h3>
-          <p className="text-lg mt-2">
-            {movieData.summary || "No overall review available."}
-          </p>
-          <h3 className="text-xl font-semibold mt-4">Overall Rating</h3>
-          <p className="text-lg mt-2">
-            {movieData.overallRating || "No overall rating available."}
-          </p>
+        <div className="mt-8">
+          <div className="bg-gray-800 rounded-lg p-4 mb-4">
+            <h3 className="text-xl font-semibold">Overall Review</h3>
+            <p className="text-lg mt-2">
+              {movieData.overallReview || "No overall review available."}
+            </p>
+          </div>
+          <div className="bg-gray-800 rounded-lg p-4 mb-4">
+            <h3 className="text-xl font-semibold">Overall Rating</h3>
+            <p className="text-lg mt-2">
+              {movieData.overallRating || "No overall rating available."}
+            </p>
+          </div>
         </div>
+
+        <h2 className="text-3xl font-semibold mb-4">Top Reviews</h2>
 
         {movieData.reviews.map((review, index) => (
           <div key={index} className="bg-gray-800 rounded-lg p-4 mt-4">
@@ -252,8 +256,12 @@ export default function MovieDetails({ params }) {
         ))}
       </div>
 
-      <div>
-        <img src={`data:image/png;base64,${movieData.runningAverage}`} />
+      <div className="mt-8">
+        <img
+          src={`data:image/png;base64,${movieData.runningAverage}`}
+          alt="worldcloud"
+          className="w-full h-auto rounded-lg shadow-lg"
+        />
       </div>
 
       {/* Add Your Review */}
