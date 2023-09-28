@@ -1,5 +1,5 @@
 -- name: insert_review!
-INSERT INTO review (user_email, motion_picture_id, title, rating, review, review_date) VALUES (:user_email, :motion_picture_id, :title, :rating, :review, :review_date);
+INSERT INTO review (motion_picture_id, title, rating, review, review_date) VALUES (:motion_picture_id, :title, :rating, :review, :review_date);
 
 -- name: add_like!
 INSERT INTO likes_and_dislikes (user_email, review_id, like_or_dislike) VALUES (:user_email, :review_id, :like_or_dislike)
