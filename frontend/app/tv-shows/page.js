@@ -51,14 +51,14 @@ export default function Movies() {
           &lt; Back to Home
         </Link>
         <h1 className="text-4xl font-extrabold text-white mb-8">
-          Explore Movies
+          Explore TV Shows
         </h1>
 
         {/* Search Bar */}
         <div className="relative mb-7">
           <input
             type="text"
-            placeholder="Search for movies..."
+            placeholder="Search for tv shows..."
             value={searchQuery}
             onChange={handleSearchInputChange}
             className="w-full px-4 py-2 pl-10 pr-3 rounded-full bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring focus:border-blue-500"

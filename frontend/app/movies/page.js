@@ -34,7 +34,7 @@ export default function Movies() {
     setSearchQuery(query);
 
     // Filter movies based on the search query
-    const filtered = filteredMovies.filter((movie) =>
+    const filtered = movies.filter((movie) =>
       movie.title.toLowerCase().includes(query)
     );
     setFilteredMovies(filtered);
