@@ -31,7 +31,7 @@ INSERT INTO motion_picture_writers (motion_picture_id, writer_id) VALUES (:motio
 ON CONFLICT (motion_picture_id, writer_id) DO NOTHING;
 
 --name: get_all_movies
-SELECT title, poster, tagline FROM motion_picture WHERE type = 1;
+SELECT id, title, poster, tagline FROM motion_picture WHERE type = 1;
 
 --name: get_all_shows
-SELECT title, poster, tagline FROM motion_picture WHERE type = 2;
+SELECT id, title, poster, tagline FROM motion_picture WHERE type = 2;
