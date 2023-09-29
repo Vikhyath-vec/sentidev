@@ -160,7 +160,7 @@ export default function MovieDetails({ params }) {
             Overall Review
           </h3>
           <p className="text-lg mt-2">
-            {movieData.overallReview || "No overall review available."}
+            {movieData.summary || "No overall review available."}
           </p>
         </div>
         <div className="bg-gray-800 rounded-lg p-4 mb-4">

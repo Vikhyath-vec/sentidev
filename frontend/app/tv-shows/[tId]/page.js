@@ -82,7 +82,7 @@ export default function MovieDetails({ params }) {
   return (
     <div className="bg-gradient-to-b from-gray-900 to-black min-h-screen text-white">
       <Link
-        href="/shows"
+        href="/tv-shows"
         className="bg-blue-500 hover:bg-blue-600 text-white font-semibold mt-5 mb-0 ml-5 py-2 px-4 rounded-full transition-transform transform hover:scale-105 inline-block"
       >
         &lt; Back to TV Shows
@@ -153,7 +153,7 @@ export default function MovieDetails({ params }) {
             Overall Review
           </h3>
           <p className="text-lg mt-2">
-            {movieData.overallReview || "No overall review available."}
+            {movieData.summary || "No overall review available."}
           </p>
         </div>
         <div className="bg-gray-800 rounded-lg p-4 mb-4">

@@ -40,3 +40,6 @@ def get_actor_profile_picture(name: str) -> str:
     
     actor_url = "https://image.tmdb.org/t/p/original" + json_data["results"][0]["profile_path"]
     return actor_url
+
+def get_recommendations(title: str):
+    pass

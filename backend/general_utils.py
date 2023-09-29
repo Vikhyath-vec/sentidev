@@ -60,12 +60,14 @@ def get_all_details(conn, id1, mtype):
     movie_dict["reviews"] = reviews
 
     # Summarization model
-    summarization_model = pipeline(model="ainize/bart-base-cnn", max_length=4096)
+    summarization_model = pipeline(model="ainize/bart-base-cnn", max_length=1024)
     review_data = []
     for review in reviews_info[:3]:
         review_data.append(review[5])
     concat_reviews = " ".join(review_data)
-    movie_dict["summary"] = summarization_model(concat_reviews)[0]["summary_text"]
+    summary = summarization_model(concat_reviews)[0]["summary_text"]
+    print(summary)
+    movie_dict["summary"] = summary
     
 
     stop_words = ["want", "many", "literally", "much", "want", "series", "yet", "happened",
