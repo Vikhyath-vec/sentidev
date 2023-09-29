@@ -22,15 +22,6 @@ export default function MovieDetails({ params }) {
   console.log("params:", params);
 
   const [movieData, setMovieData] = useState([]);
-  const [userReview, setUserReview] = useState("");
-  const [userRating, setUserRating] = useState(0);
-  const [ratingsData, setRatingsData] = useState({
-    5: 0,
-    4: 0,
-    3: 0,
-    2: 0,
-    1: 0,
-  });
   const [reviewData, setReviewData] = useState({
     mid: params.mId,
     title: "",
@@ -43,7 +34,6 @@ export default function MovieDetails({ params }) {
     const fetchData = async () => {
       try {
         const response = await axios.get(`http://localhost:8000/movies/${params.mId}`);
-        // const data = await response.json();
         console.log("response:", response.data);
         setMovieData(response.data);
         setLoading(false);
@@ -86,13 +76,6 @@ export default function MovieDetails({ params }) {
     }
   };
 
-  // const handleRatingChange = (rating) => {
-  //   setUserRating(rating);
-  // };
-
-  // const totalRatings = Object.values(ratingsData).reduce((acc, curr) => acc + curr, 0);
-  // const totalPoints = Object.entries(ratingsData).reduce((acc, [rating, count]) => acc + rating * count, 0);
-  // const averageRating = totalPoints / totalRatings || movieData.ratings;
   const percentage = (movieData.overallRating / 10) * 100;
 
   return (
@@ -193,10 +176,7 @@ export default function MovieDetails({ params }) {
             {movieData.overallRating.toFixed(2)} / 10
           </div>
         </div>
-        </div>
-
-        {/* Horizontal Rating Bar */}
-        
+        </div>        
 
         <h2 className="text-3xl font-semibold mb-4">Top Reviews</h2>
 
