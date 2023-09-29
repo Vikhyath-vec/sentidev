@@ -93,7 +93,7 @@ export default function MovieDetails({ params }) {
   // const totalRatings = Object.values(ratingsData).reduce((acc, curr) => acc + curr, 0);
   // const totalPoints = Object.entries(ratingsData).reduce((acc, [rating, count]) => acc + rating * count, 0);
   // const averageRating = totalPoints / totalRatings || movieData.ratings;
-  // const percentage = (movieData.overallRating / 10) * 100;
+  const percentage = (movieData.overallRating / 10) * 100;
 
   return (
     <div className="bg-gradient-to-b from-gray-900 to-black min-h-screen text-white">
@@ -176,10 +176,27 @@ export default function MovieDetails({ params }) {
           <h3 className="text-xl font-semibold text-yellow-400">
             Overall Rating
           </h3>
-          <p className="text-lg mt-2">
-            {movieData.overallRating || "No overall rating available."}
-          </p>
+          {/* <p className="text-lg mt-2">
+            {movieData.overallRating || "No overall rating available."} / 10
+          </p> */}
+          <div className="container mx-auto py-8 px-4">
+          <div className="w-full bg-gray-900 h-8 rounded-full overflow-hidden">
+            <div
+              className="h-8 rounded-full transition-all ease-in-out duration-500"
+              style={{
+                width: `${percentage}%`,
+                background: "linear-gradient(to right, #3182ce, #63b3ed)",
+              }}
+            ></div>
+          </div>
+          <div className="mt-2 text-white text-center">
+            {movieData.overallRating.toFixed(2)} / 10
+          </div>
         </div>
+        </div>
+
+        {/* Horizontal Rating Bar */}
+        
 
         <h2 className="text-3xl font-semibold mb-4">Top Reviews</h2>
 
@@ -237,6 +254,69 @@ export default function MovieDetails({ params }) {
         ))}
       </div>
 
+      {/* Review Form */}
+      <div className="mt-8">
+        <h2 className="text-3xl font-semibold mb-4">Add a Review</h2>
+        <form
+          onSubmit={handleReviewSubmit}
+          className="bg-gray-800 rounded-lg p-6"
+        >
+          <div className="mb-4">
+            <label htmlFor="title" className="block text-lg text-white mb-2">
+              Title
+            </label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              value={reviewData.title}
+              onChange={handleReviewInputChange}
+              className="w-full px-4 py-2 text-lg bg-gray-700 rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="text" className="block text-lg text-white mb-2">
+              Review
+            </label>
+            <textarea
+              type="text"
+              id="review"
+              name="review"
+              value={reviewData.review}
+              onChange={handleReviewInputChange}
+              rows="4"
+              className="w-full px-4 py-2 text-lg bg-gray-700 rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+              required
+            ></textarea>
+          </div>
+          <div className="mb-4">
+            <label htmlFor="rating" className="block text-lg text-white mb-2">
+              Rating
+            </label>
+            <input
+              type="number"
+              id="rating"
+              name="rating"
+              value={reviewData.rating}
+              onChange={handleReviewInputChange}
+              min="1"
+              max="10"
+              className="w-16 px-4 py-2 text-lg bg-gray-700 rounded-lg focus:outline-none focus:ring focus:border-blue-300"
+              required
+            />
+          </div>
+          <div>
+            <button
+              type="submit"
+              className="bg-blue-700 hover:bg-blue-800 text-white font-semibold py-3 px-6 rounded-full"
+            >
+              Submit Review
+            </button>
+          </div>
+        </form>
+      </div>
+
       <div className="mt-8 ml-5">
         <h2 className="text-3xl font-semibold mb-4">
           Average Rating over Time
@@ -260,88 +340,6 @@ export default function MovieDetails({ params }) {
           />
         </div>
       </div>
-
-      {/* Review Form */}
-      <div className="mt-8">
-        <h2 className="text-3xl font-semibold mb-4">Add a Review</h2>
-        <form
-          onSubmit={handleReviewSubmit}
-          className="bg-gray-800 rounded-lg p-6"
-        >
-          <div className="mb-4">
-            <label htmlFor="title" className="block text-lg">
-              Title
-            </label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              value={reviewData.title}
-              onChange={handleReviewInputChange}
-              className="w-full px-3 py-2 text-lg border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="text" className="block text-lg">
-              Review
-            </label>
-            <textarea
-              type="text"
-              id="review"
-              name="review"
-              value={reviewData.review}
-              onChange={handleReviewInputChange}
-              rows="4"
-              className="w-full px-3 py-2 text-lg border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
-              required
-            ></textarea>
-          </div>
-          <div className="mb-4">
-            <label htmlFor="rating" className="block text-lg">
-              Rating
-            </label>
-            <input
-              type="number"
-              id="rating"
-              name="rating"
-              value={reviewData.rating}
-              onChange={handleReviewInputChange}
-              min="1"
-              max="5"
-              className="w-16 px-3 py-2 text-lg border rounded-lg focus:outline-none focus:ring focus:border-blue-300"
-              required
-            />
-          </div>
-          <div>
-            <button
-              type="submit"
-              className="bg-blue-700 hover:bg-blue-800 text-white font-semibold py-3 px-6 rounded-full"
-            >
-              Submit Review
-            </button>
-          </div>
-        </form>
-      </div>
-
-      {/* Horizontal Rating Bar */}
-      {/* <div className="container mx-auto py-8 px-4">
-        <h2 className="text-2xl font-extrabold text-white mb-4">
-          Average Rating
-        </h2>
-        <div className="w-full bg-gray-800 h-8 rounded-full overflow-hidden">
-          <div
-            className="h-8 rounded-full transition-all ease-in-out duration-500"
-            style={{
-              width: `${percentage}%`,
-              background: "linear-gradient(to right, #3182ce, #63b3ed)",
-            }}
-          ></div>
-        </div>
-        <div className="mt-2 text-white text-center">
-          {averageRating.toFixed(1)}
-        </div>
-      </div> */}
 
       {/* Ratings Table */}
       {/* <div className="container mx-auto py-8 px-4">
