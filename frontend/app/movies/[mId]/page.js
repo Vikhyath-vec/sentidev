@@ -70,7 +70,7 @@ export default function MovieDetails({ params }) {
 
     try {
       const response = await axios.post(
-        `http://localhost:8000/movies/add_review`,
+        `http://localhost:8000/add_review`,
         reviewData
       );
 
@@ -263,8 +263,11 @@ export default function MovieDetails({ params }) {
 
       {/* Review Form */}
       <div className="mt-8">
-        <h2 className="text-3xl font-semibold">Add a Review</h2>
-        <form onSubmit={handleReviewSubmit}>
+        <h2 className="text-3xl font-semibold mb-4">Add a Review</h2>
+        <form
+          onSubmit={handleReviewSubmit}
+          className="bg-gray-800 rounded-lg p-6"
+        >
           <div className="mb-4">
             <label htmlFor="title" className="block text-lg">
               Title
