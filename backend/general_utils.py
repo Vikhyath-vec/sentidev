@@ -4,6 +4,7 @@ from wordcloud import STOPWORDS
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import base64
+import math
 
 queries = aiosql.from_path("sql", "psycopg2")
 
@@ -88,7 +89,7 @@ def get_all_details(conn, id1, mtype):
     # plt.title("Positive Tweets - Wordcloud")
     plt.axis("off")
     plt.savefig("positive_wordcloud.png")
-    # plt.show()
+    plt.close()
     with open('positive_wordcloud.png', 'rb') as image_file:
         image_base64 = base64.b64encode(image_file.read()).decode('utf-8')
     movie_dict["wordcloud"] = image_base64
@@ -107,9 +108,9 @@ def get_all_details(conn, id1, mtype):
     plt.ylabel("Overall Rating")
     plt.xticks([])
     plt.savefig("running_average.png")
-
+    plt.close()
     with open('running_average.png', 'rb') as image_file:
         image_base64 = base64.b64encode(image_file.read()).decode('utf-8')
     movie_dict["runningAverage"] = image_base64
-    movie_dict["overallRating"] = running_average[-1]
+    movie_dict["overallRating"] = round(running_average[-1], 2)
     return movie_dict

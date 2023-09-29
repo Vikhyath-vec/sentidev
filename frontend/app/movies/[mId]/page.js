@@ -185,12 +185,12 @@ export default function MovieDetails({ params }) {
 
       {/* Reviews */}
       <div className="mt-8 mr-5 ml-5">
-        <div className="bg-gray-800 rounded-lg p-4">
-          <h3 className="text-xl font-semibold">Overall Review</h3>
+        <div className="bg-gray-800 rounded-lg p-4 mb-5">
+          <h3 className="text-3xl font-semibold">Overall Review</h3>
           <p className="text-lg mt-2">
             {movieData.summary || "No overall review available."}
           </p>
-          <h3 className="text-xl font-semibold mt-4">Overall Rating</h3>
+          <h3 className="text-3xl font-semibold mt-4">Overall Rating</h3>
           <p className="text-lg mt-2">
             {movieData.overallRating || "No overall rating available."}
           </p>
@@ -252,20 +252,26 @@ export default function MovieDetails({ params }) {
         ))}
       </div>
 
-      <div className="mt-8">
-        <img 
-          src={`data:image/png;base64,${movieData.runningAverage}`} 
-          alt="worldcloud"
-          className="w-1/2 h-full rounded-lg shadow-lg"
-        />
+      <div className="mt-8 ml-5">
+        <h2 className="text-3xl font-semibold mb-4">Average Rating over Time</h2>
+        <div className="flex justify-center items-center">
+          <img 
+            src={`data:image/png;base64,${movieData.runningAverage}`} 
+            alt="worldcloud"
+            className="w-1/2 h-full rounded-lg shadow-lg"
+          />
+        </div>
       </div>
 
-      <div className="mt-8">
-        <img 
-          src={`data:image/png;base64,${movieData.worldcloud}`} 
-          alt="worldcloud"
-          className="w-1/2 h-auto rounded-lg shadow-lg"
-        />
+      <div className="mt-8 ml-5 mb-5">
+        <h2 className="text-3xl font-semibold mb-4">Word Cloud</h2>
+        <div className="flex justify-center items-center">
+          <img 
+            src={`data:image/png;base64,${movieData.wordcloud}`} 
+            alt="worldcloud"
+            className="w-1/2 h-full rounded-lg shadow-lg"
+          />
+        </div>
       </div>
 
       {/* Add Your Review */}
