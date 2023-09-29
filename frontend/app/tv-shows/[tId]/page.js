@@ -48,7 +48,20 @@ export default function MovieDetails({ params }) {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="bg-gradient-to-b from-gray-900 to-black min-h-screen text-white">
+        <div className="container mx-auto p-4">
+          <div className="flex items-center justify-center h-screen">
+            <Image
+              src="/movie.gif"
+              alt="Loading..."
+              layout="fill"
+              objectFit="cover"
+            />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const handleReviewInputChange = (e) => {

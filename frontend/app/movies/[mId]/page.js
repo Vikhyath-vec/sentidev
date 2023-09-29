@@ -47,19 +47,10 @@ export default function MovieDetails({ params }) {
     fetchData();
   }, []);
 
-  const loadingAnimation = (
-    <div className="animate-pulse">
-      <div className="bg-gray-800 rounded-lg p-4 mb-4 w-full h-12"></div>
-      <div className="bg-gray-800 rounded-lg p-4 mb-4 w-full h-12"></div>
-      <div className="bg-gray-800 rounded-lg p-4 mb-4 w-full h-12"></div>
-    </div>
-  );
-
   if(loading) {
     return (
       <div className="bg-gradient-to-b from-gray-900 to-black min-h-screen text-white">
         <div className="container mx-auto p-4">
-          {/* Loading GIF */}
           <div className="flex items-center justify-center h-screen">
             <Image
               src="/movie.gif"
