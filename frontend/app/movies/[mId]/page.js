@@ -62,7 +62,7 @@ export default function MovieDetails({ params }) {
           {/* Loading GIF */}
           <div className="flex items-center justify-center h-screen">
             <Image
-              src="/giphy.gif" // Path to your loading GIF in the public directory
+              src="/movie.gif" // Path to your loading GIF in the public directory
               alt="Loading..."
               width={100} // Adjust the width and height as needed
               height={100}
