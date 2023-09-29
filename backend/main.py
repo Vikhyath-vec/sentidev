@@ -130,6 +130,7 @@ async def add_motion_picture(info: Request):
             poster=motion_picture_info["poster"],
             tmdb_id=motion_picture_info["tmdb_id"]
         )
+        print(motion_picture_id)
     time.sleep(1)
     for actor in motion_picture_info["actors"].split(", "):
         actor_profile_picture = get_actor_profile_picture(actor)
