@@ -66,7 +66,6 @@ def get_all_details(conn, id1, mtype):
         review_data.append(review[5])
     concat_reviews = " ".join(review_data)
     summary = summarization_model(concat_reviews)[0]["summary_text"]
-    print(summary)
     movie_dict["summary"] = summary
     
 
