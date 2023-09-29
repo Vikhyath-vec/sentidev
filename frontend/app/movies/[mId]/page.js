@@ -249,7 +249,7 @@ export default function MovieDetails({ params }) {
       </div>
 
       {/* Review Form */}
-      <div className="mt-8">
+      <div className="mt-8 mr-5 ml-5">
         <h2 className="text-3xl font-semibold mb-4">Add a Review</h2>
         <form
           onSubmit={handleReviewSubmit}
