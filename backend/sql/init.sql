@@ -68,7 +68,7 @@ CREATE TABLE motion_picture_actors
 CREATE TABLE review
 (
     id BIGSERIAL NOT NULL PRIMARY KEY,
-    user_email VARCHAR NOT NULL,
+    user_email VARCHAR,
     motion_picture_id BIGINT NOT NULL,
     title VARCHAR NOT NULL,
     rating INT NOT NULL,
@@ -87,4 +87,13 @@ CREATE TABLE likes_and_dislikes
     PRIMARY KEY (user_email, review_id),
     FOREIGN KEY (user_email) REFERENCES users(user_email),
     FOREIGN KEY (review_id) REFERENCES review(id)
+);
+
+CREATE TABLE recommendations
+(
+    motion_picture_id BIGINT NOT NULL,
+    recommended_motion_picture_id BIGINT NOT NULL,
+    PRIMARY KEY (motion_picture_id, recommended_motion_picture_id),
+    FOREIGN KEY (motion_picture_id) REFERENCES motion_picture(id),
+    FOREIGN KEY (recommended_motion_picture_id) REFERENCES motion_picture(id)
 );

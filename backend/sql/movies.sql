@@ -37,10 +37,10 @@ SELECT id, title, poster, tagline FROM motion_picture WHERE type = 1;
 SELECT id, title, poster, tagline FROM motion_picture WHERE type = 2;
 
 --name: get_movie_by_id^
-SELECT id, title, poster, tagline, description, director FROM motion_picture WHERE id = :id AND type = 1;
+SELECT id, title, poster, tagline, description, director, tmdb_id FROM motion_picture WHERE id = :id AND type = 1;
 
 --name: get_show_by_id^
-SELECT id, title, poster, tagline, description FROM motion_picture WHERE id = :id AND type = 2;
+SELECT id, title, poster, tagline, description, tmdb_id FROM motion_picture WHERE id = :id AND type = 2;
 
 --name: get_genres_by_motion_picture_id
 SELECT genres.id, genres.name FROM genres INNER JOIN motion_picture_genres ON genres.id = motion_picture_genres.genre_id WHERE motion_picture_genres.motion_picture_id = :id;
@@ -62,3 +62,15 @@ SELECT id FROM genres WHERE name = :name;
 
 -- name: get_motion_picture_id^
 SELECT id FROM motion_picture WHERE title = :title AND type = :mtype;
+
+-- name: get_generic_motion_picture_id^
+SELECT id FROM motion_picture WHERE title = :title;
+
+-- name: check_recommendation_exists$
+SELECT COUNT(*) FROM recommendations WHERE motion_picture_id = :motion_picture_id;
+
+-- name: insert_recommendation!
+INSERT INTO recommendations (motion_picture_id, recommended_motion_picture_id) VALUES (:motion_picture_id, :recommended_motion_picture_id);
+
+-- name: get_recommendations_by_motion_picture_id
+SELECT motion_picture.id, motion_picture.title, motion_picture.poster, motion_picture.tagline FROM motion_picture INNER JOIN recommendations ON motion_picture.id = recommendations.recommended_motion_picture_id WHERE recommendations.motion_picture_id = :id;

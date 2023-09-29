@@ -4,6 +4,7 @@ import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const recommendedMovies = [
   {
@@ -19,7 +20,7 @@ const recommendedMovies = [
 ];
 
 export default function MovieDetails({ params }) {
-
+  const router = useRouter();
   console.log("params:", params);
 
   const [movieData, setMovieData] = useState([]);
@@ -365,28 +366,33 @@ export default function MovieDetails({ params }) {
       </div> */}
 
       {/* Recommended Movies */}
-      {/* <div className="container mx-auto py-8 px-4">
+      <div className="container mx-auto py-8 px-4">
         <h2 className="text-2xl font-extrabold text-white mb-4">
           Recommended Movies
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {recommendedMovies.map((movie) => (
-            <div
-              key={movie.id}
-              className="bg-gray-800 p-4 rounded-lg transition-transform transform hover:scale-105 relative"
+          {movieData.recommendations.map((movie) => (
+            // <div
+            //   key={movie.id}
+            //   className="bg-gray-800 p-4 rounded-lg transition-transform transform hover:scale-105 relative"
+            // >
+            <button
+              className="bg-gray-800 p-4 rounded-lg transition-transform transform hover:scale-105"
+              onClick={() => router.push(`/movies/${movie.id}`)}
             >
               <img
-                src={movie.image}
+                src={movie.poster}
                 alt={movie.title}
                 className="w-full h-auto rounded-lg"
               />
               <h2 className="text-lg font-semibold text-white mt-2">
                 {movie.title}
               </h2>
-            </div>
+              <p className="text-gray-400 mt-2">{movie.tagline}</p>
+            </button>
           ))}
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }

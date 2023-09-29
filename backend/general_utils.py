@@ -5,8 +5,99 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import base64
 import math
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+import time
+import requests
+import re
+from tmdb_utils import get_recommendations
+import json
+import requests
+from omdb_utils import get_motion_picture_info
+from scraping_utils import extract_tagline
+from tmdb_utils import get_actor_profile_picture
 
 queries = aiosql.from_path("sql", "psycopg2")
+
+def extract_and_insert_reviews(conn, motion_picture_id, title, type):
+    driver = webdriver.Chrome()
+    driver.get("https://www.imdb.com/")
+    search_box = driver.find_element(By.NAME, "q")
+    search_box.send_keys(f"{title}")
+    search_box.send_keys(Keys.RETURN)
+
+    home_url = driver.find_element(By.CLASS_NAME, "ipc-metadata-list-summary-item__t").get_attribute("href")
+    home_url = home_url.split("?")[0]
+    driver.get(f"{home_url}reviews?ref_=tt_urv")
+
+    cnt = 0
+    while cnt < 7:
+        try:
+            button = driver.find_element(By.CLASS_NAME, "ipl-load-more__button")
+            button.click()
+            time.sleep(4)
+            cnt += 1
+        except:
+            break
+    
+    complete_reviews = driver.find_elements(By.CLASS_NAME, "lister-item-content")
+    for complete_review in complete_reviews:
+        date = complete_review.find_element(By.CLASS_NAME, "review-date").text
+        title = complete_review.find_element(By.CLASS_NAME, "title").text
+        try:
+            rating = complete_review.find_element(By.CLASS_NAME, "rating-other-user-rating").text[:-3]
+        except:
+            rating = 0
+        try:
+            review = complete_review.find_element(By.CLASS_NAME, "content").text
+        except:
+            review = ""
+
+        if review == "":
+            continue
+        review = review.replace("\n", "")
+        review = review.replace("\\'", "'")
+        pattern = "\d+ out of \d+ found this helpful. Was this review helpful"
+        removed_text = re.sub(pattern, "", review)
+        pattern = "Sign in to vote."
+        removed_text = re.sub(pattern, "", removed_text)
+        pattern = "Permalink"
+        removed_text = re.sub(pattern, "", removed_text)
+        review = str(removed_text)
+        date = date.split()
+        day = date[0]
+        month = date[1]
+        year = date[2]
+        if len(day) == 1:
+            day = '0' + day
+        if month == 'January':
+            month = '01'
+        elif month == 'February':
+            month = '02'
+        elif month == 'March':
+            month = '03'
+        elif month == 'April':
+            month = '04'
+        elif month == 'May':
+            month = '05'
+        elif month == 'June':
+            month = '06'
+        elif month == 'July':
+            month = '07'
+        elif month == 'August':
+            month = '08'
+        elif month == 'September':
+            month = '09'
+        elif month == 'October':
+            month = '10'
+        elif month == 'November':
+            month = '11'
+        elif month == 'December':
+            month = '12'
+
+        date = year + '-' + month + '-' + day
+        queries.insert_review(conn, motion_picture_id=motion_picture_id, title=title, rating=int(rating), review=review, review_date=date)
 
 def get_all_details(conn, id1, mtype):
     if mtype == 1:
@@ -94,7 +185,7 @@ def get_all_details(conn, id1, mtype):
     with open('positive_wordcloud.png', 'rb') as image_file:
         image_base64 = base64.b64encode(image_file.read()).decode('utf-8')
     movie_dict["wordcloud"] = image_base64
-
+    
     sorted_reviews = queries.get_review_by_id_sorted(conn, motion_picture_id=motion_picture_info[0])
 
     # Calculate running average over time
@@ -114,4 +205,86 @@ def get_all_details(conn, id1, mtype):
         image_base64 = base64.b64encode(image_file.read()).decode('utf-8')
     movie_dict["runningAverage"] = image_base64
     movie_dict["overallRating"] = round(running_average[-1], 2)
+
+    number_of_recs = queries.check_recommendation_exists(conn, motion_picture_id=motion_picture_info[0])
+    if number_of_recs == 0:
+        if mtype == 1:
+            recommendations = get_recommendations(motion_picture_info[6], mtype)
+        elif mtype == 2:
+            recommendations = get_recommendations(motion_picture_info[5], mtype)
+        for title in recommendations:
+            print(title)
+            rec_id = queries.get_generic_motion_picture_id(conn, title=title)
+            if rec_id is not None:
+                queries.insert_recommendation(conn, motion_picture_id=motion_picture_info[0], recommended_motion_picture_id=rec_id)
+            else:
+                print("aa")
+                new_motion_picture_info = get_motion_picture_info(title)
+                if "Error" in new_motion_picture_info.keys():
+                    return {"Result": "Failure"}
+                new_motion_picture_info["tagline"] = extract_tagline(title)
+                if new_motion_picture_info["type"] == 0:
+                    motion_picture_id = queries.get_motion_picture_id(conn, title=new_motion_picture_info["title"], mtype=1)
+                    if motion_picture_id is not None:
+                        return {"Result": "Failure"}
+                    motion_picture_id = queries.insert_movie(
+                        conn,
+                        title=new_motion_picture_info["title"],
+                        tagline=new_motion_picture_info["tagline"],
+                        description=new_motion_picture_info["description"],
+                        poster=new_motion_picture_info["poster"],
+                        director=new_motion_picture_info["director"],
+                        tmdb_id=new_motion_picture_info["tmdb_id"]
+                    )
+                elif new_motion_picture_info["type"] == 1:
+                    motion_picture_id = queries.get_motion_picture_id(conn, title=new_motion_picture_info["title"], mtype=2)
+                    if motion_picture_id is not None:
+                        return {"Result": "Failure"}
+                    motion_picture_id = queries.insert_show(
+                        conn,
+                        title=new_motion_picture_info["title"],
+                        tagline=new_motion_picture_info["tagline"],
+                        description=new_motion_picture_info["description"],
+                        poster=new_motion_picture_info["poster"],
+                        tmdb_id=new_motion_picture_info["tmdb_id"]
+                    )
+                time.sleep(1)
+                for actor in new_motion_picture_info["actors"].split(", "):
+                    actor_profile_picture = get_actor_profile_picture(actor)
+                    actor_id = queries.get_actor_id(conn, name=actor)
+                    if actor_id is None:
+                        actor_id = queries.insert_actor(conn, name=actor, profile_picture=actor_profile_picture)
+                    queries.insert_motion_picture_actor(conn, motion_picture_id=motion_picture_id, actor_id=actor_id)
+                time.sleep(1)
+                for writer in new_motion_picture_info["writers"].split(", "):
+                    writer_id = queries.get_writer_id(conn, name=writer)
+                    if writer_id is None:
+                        writer_id = queries.insert_writer(conn, name=writer)
+                    queries.insert_motion_picture_writer(conn, motion_picture_id=motion_picture_id, writer_id=writer_id)
+                time.sleep(1)
+                for genre in new_motion_picture_info["genres"].split(", "):
+                    genre_id = queries.get_genre_id(conn, name=genre)
+                    if genre_id is None:
+                        genre_id = queries.insert_genre(conn, name=genre)
+                    queries.insert_motion_picture_genre(conn, motion_picture_id=motion_picture_id, genre_id=genre_id)
+                
+                extract_and_insert_reviews(conn, motion_picture_id, new_motion_picture_info["title"], new_motion_picture_info["type"])
+                conn.commit()
+                queries.insert_recommendation(conn, motion_picture_id=motion_picture_info[0], recommended_motion_picture_id=motion_picture_id)
+    else:
+        pass
+    conn.commit()
+
+    recommendations = queries.get_recommendations_by_motion_picture_id(conn, id=motion_picture_info[0])
+    recommended_movies = []
+    for recommendation in recommendations:
+        recommendation_dict = {
+            "id": recommendation[0],
+            "title": recommendation[1],
+            "poster": recommendation[2],
+            "tagline": recommendation[3]
+        }
+        recommended_movies.append(recommendation_dict)
+    movie_dict["recommendations"] = recommended_movies
+
     return movie_dict

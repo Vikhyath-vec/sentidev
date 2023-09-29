@@ -41,5 +41,32 @@ def get_actor_profile_picture(name: str) -> str:
     actor_url = "https://image.tmdb.org/t/p/original" + json_data["results"][0]["profile_path"]
     return actor_url
 
-def get_recommendations(title: str):
-    pass
+def get_recommendations(tmdb_id, mtype):
+    if mtype == 1:
+        url = "https://api.themoviedb.org/3/movie/{}/recommendations?language=en-US&page=1".format(tmdb_id)
+    elif mtype == 2:
+        url = "https://api.themoviedb.org/3/tv/{}/recommendations?language=en-US&page=1".format(tmdb_id)
+
+    headers = {
+        "accept": "application/json",
+        "Authorization": "Bearer {}".format(TMDB_ACCESS_TOKEN)
+    }
+
+    response = requests.get(url, headers=headers)
+    json_data = json.loads(response.text)
+    recommendations = []
+    if json_data["total_results"] == 0:
+        return {"Error": "No recommendations found!"}
+    elif json_data["total_results"] < 5:
+        for rec in json_data["results"]:
+            if mtype == 1:
+                recommendations.append(rec["title"])
+            elif mtype == 2:
+                recommendations.append(rec["name"])
+    else:
+        for rec in json_data["results"][:5]:
+            if mtype == 1:
+                recommendations.append(rec["title"])
+            elif mtype == 2:
+                recommendations.append(rec["name"])
+    return recommendations

@@ -11,8 +11,9 @@ from google.auth import exceptions
 from omdb_utils import get_motion_picture_info
 from scraping_utils import extract_tagline
 from tmdb_utils import get_actor_profile_picture
-from general_utils import get_all_details
+from general_utils import get_all_details, extract_and_insert_reviews
 import time
+
 
 queries = aiosql.from_path("sql", "psycopg2")
 
@@ -149,6 +150,7 @@ async def add_motion_picture(info: Request):
             genre_id = queries.insert_genre(conn, name=genre)
         queries.insert_motion_picture_genre(conn, motion_picture_id=motion_picture_id, genre_id=genre_id)
     
+    extract_and_insert_reviews(conn, motion_picture_id, motion_picture_info["title"], motion_picture_info["type"])
     conn.commit()
     return {"Result": "Success"}
 
