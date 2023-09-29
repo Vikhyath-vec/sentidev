@@ -93,7 +93,7 @@ export default function MovieDetails({ params }) {
   // const totalRatings = Object.values(ratingsData).reduce((acc, curr) => acc + curr, 0);
   // const totalPoints = Object.entries(ratingsData).reduce((acc, [rating, count]) => acc + rating * count, 0);
   // const averageRating = totalPoints / totalRatings || movieData.ratings;
-  // const percentage = (averageRating / 5) * 100;
+  // const percentage = (movieData.overallRating / 10) * 100;
 
   return (
     <div className="bg-gradient-to-b from-gray-900 to-black min-h-screen text-white">
@@ -284,8 +284,9 @@ export default function MovieDetails({ params }) {
               Review
             </label>
             <textarea
-              id="text"
-              name="text"
+              type="text"
+              id="review"
+              name="review"
               value={reviewData.review}
               onChange={handleReviewInputChange}
               rows="4"
