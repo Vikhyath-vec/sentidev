@@ -46,8 +46,16 @@ export default function MovieDetails({ params }) {
     fetchData();
   }, []);
 
+  const loadingAnimation = (
+    <div className="animate-pulse">
+      <div className="bg-gray-800 rounded-lg p-4 mb-4 w-full h-12"></div>
+      <div className="bg-gray-800 rounded-lg p-4 mb-4 w-full h-12"></div>
+      <div className="bg-gray-800 rounded-lg p-4 mb-4 w-full h-12"></div>
+    </div>
+  );
+
   if(loading) {
-    return <div>Loading...</div>
+    return <div className="mt-8">{loadingAnimation}</div>;
   }
 
   const handleReviewInputChange = (e) => {
