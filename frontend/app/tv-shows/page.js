@@ -70,7 +70,7 @@ export default function Movies() {
             ? filteredMovies.map((movie) => (
                 <button
                   className="bg-gray-800 p-4 rounded-lg transition-transform transform hover:scale-105"
-                  onClick={() => router.push(`/shows/${movie.id}`)}
+                  onClick={() => router.push(`/tv-shows/${movie.id}`)}
                 >
                   <img
                     src={movie.poster}
@@ -86,7 +86,7 @@ export default function Movies() {
             : movies.map((movie) => (
                 <button
                   className="bg-gray-800 p-4 rounded-lg transition-transform transform hover:scale-105"
-                  onClick={() => router.push(`/movies/${movie.id}`)}
+                  onClick={() => router.push(`/tv-shows/${movie.id}`)}
                 >
                   <img
                     src={movie.poster}

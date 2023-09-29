@@ -23,14 +23,14 @@ conn = psycopg2.connect(
 )
 print("Opened database successfully")
 
-df = pd.read_csv("reviews.csv", delimiter='~')
+df = pd.read_csv("reviews1.csv", delimiter='~')
 
 num_rows = df.shape[0]
 print(num_rows)
 for i in range(num_rows):
     review = df['Review'][i]
     rating = df['Rating'][i]
-    movie = df['Movie Name'][i]
+    movie = df['Show Name'][i]
     date = df['Date'][i]
     title = df['Title'][i]
     
@@ -67,6 +67,6 @@ for i in range(num_rows):
         month = '12'
 
     date = year + '-' + month + '-' + day
-    motion_picture_id = queries.get_motion_picture_id(conn, title=movie, mtype=1)
+    motion_picture_id = queries.get_motion_picture_id(conn, title=movie, mtype=2)
     queries.insert_review(conn, motion_picture_id=motion_picture_id, title=title, rating=int(rating), review=review, review_date=date)
     conn.commit()
