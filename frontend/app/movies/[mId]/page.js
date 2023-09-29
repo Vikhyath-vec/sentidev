@@ -3,6 +3,7 @@
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Image from "next/image";
 
 const recommendedMovies = [
   {
@@ -55,7 +56,21 @@ export default function MovieDetails({ params }) {
   );
 
   if(loading) {
-    return <div className="mt-8">{loadingAnimation}</div>;
+    return (
+      <div className="bg-gradient-to-b from-gray-900 to-black min-h-screen text-white">
+        <div className="container mx-auto p-4">
+          {/* Loading GIF */}
+          <div className="flex items-center justify-center h-screen">
+            <Image
+              src="/giphy.gif" // Path to your loading GIF in the public directory
+              alt="Loading..."
+              width={100} // Adjust the width and height as needed
+              height={100}
+            />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const handleReviewInputChange = (e) => {
