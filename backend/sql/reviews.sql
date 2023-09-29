@@ -1,6 +1,9 @@
 -- name: insert_review!
 INSERT INTO review (motion_picture_id, title, rating, review, review_date) VALUES (:motion_picture_id, :title, :rating, :review, :review_date);
 
+-- name: insert_review_current_date!
+INSERT INTO review (motion_picture_id, title, rating, review) VALUES (:motion_picture_id, :title, :rating, :review);
+
 -- name: add_like!
 INSERT INTO likes_and_dislikes (user_email, review_id, like_or_dislike) VALUES (:user_email, :review_id, :like_or_dislike)
 ON CONFLICT (user_email, review_id) DO UPDATE SET like_or_dislike = :like_or_dislike;

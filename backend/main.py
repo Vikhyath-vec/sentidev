@@ -152,3 +152,13 @@ async def add_motion_picture(info: Request):
     conn.commit()
     return {"Result": "Success"}
 
+@app.post("/add_review")
+async def add_review(review: Request):
+    req_review = await review.json()
+    motion_picture_id = req_review["mid"]
+    title = req_review["title"]
+    rating = req_review["rating"]
+    review = req_review["review"]
+    queries.insert_review_current_date(conn, motion_picture_id=motion_picture_id, title=title, rating=rating, review=review)
+    conn.commit()
+    return {"Result": "Success"}
